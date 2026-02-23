@@ -6,17 +6,37 @@ public class MoonlightPlayer {
 
 
     private void addMoonlightNotes(ArrayList<Note> score) {
-        score.add(new Note(56, 0, 8, 50));
-        score.add(new Note(61, 8, 8, 50));
-        score.add(new Note(64, 16, 8, 50));
-
-        score.add(new Note(56, 24, 8, 50));
-        score.add(new Note(61, 32, 8, 50));
-        score.add(new Note(64, 40, 8, 50));
+        int tripletStep = 8;
+        int barLength = 96;
 
 
-        score.add(new Note(37, 0, 96, 60));
-        score.add(new Note(49, 0, 96, 60));
+        long time = 0;
+
+        score.add(new Note(37, time, barLength, 60));
+        score.add(new Note(49, time, barLength, 60));
+
+
+        for (int i = 0; i < 4; i++) {
+            score.add(new Note(56, time, tripletStep, 45));
+            time += tripletStep;
+            score.add(new Note(61, time, tripletStep, 45));
+            time += tripletStep;
+            score.add(new Note(64, time, tripletStep, 45));
+            time += tripletStep;
+        }
+
+        score.add(new Note(35, time, barLength, 60));
+        score.add(new Note(47, time, barLength, 60));
+
+
+        for (int i = 0; i < 4; i++) {
+            score.add(new Note(56, time, tripletStep, 45));
+            time += tripletStep;
+            score.add(new Note(61, time, tripletStep, 45));
+            time += tripletStep;
+            score.add(new Note(64, time, tripletStep, 45));
+            time += tripletStep;
+        }
     }
 
     private MidiEvent makeEvent(int command, int pitch, int velocity, long tick) throws Exception {
@@ -42,8 +62,13 @@ public class MoonlightPlayer {
                 }
                 sequencer.setSequence(sequence);
                 sequencer.setTempoInBPM(50);
+
+                sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+                sequencer.setLoopStartPoint(0);
+                sequencer.setLoopEndPoint(-1);
+
                 sequencer.start();
-            } catch (Exception e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
